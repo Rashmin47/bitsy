@@ -3,6 +3,7 @@ import { Badge } from "../ui/badge";
 import { HeroGradient } from "./background-gradient";
 import Link from "next/link";
 import { Button } from "../ui/button";
+import { MotionDiv } from "../ui/motion-div";
 
 export default function HeroSection() {
   return (
@@ -23,28 +24,38 @@ export default function HeroSection() {
             together with AI-powered insights.
           </p>
           <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
-            <Link href="/sign-up">
-              <Button
-                size="lg"
-                className="link-button hero-button-outline group"
-              >
-                <span className="hero-button-content">
-                  <RocketIcon className="hero-button-icon-outline group-hover:rotate-12 group-hover:text-primary" />
-                  Get Started for Free
-                </span>
-              </Button>
-            </Link>
-            <Link href="/#pricing">
-              <Button
-                size="lg"
-                className="link-button hero-button-primary group"
-              >
-                <span className="hero-button-content">
-                  <ZapIcon className="hero-button-icon-primary group-hover:scale-125 group-hover:rotate-12" />
-                  Buy a Plan
-                </span>
-              </Button>
-            </Link>
+            <MotionDiv>
+              <Link href="/sign-up">
+                <Button
+                  size="lg"
+                  className="link-button hero-button-outline group"
+                >
+                  <span className="hero-button-content">
+                    <RocketIcon className="hero-button-icon-outline group-hover:rotate-12 group-hover:text-primary" />
+                    Get Started for Free
+                  </span>
+                </Button>
+              </Link>
+            </MotionDiv>
+            <MotionDiv
+              initial={{ opacity: 0, y: 20 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              animate={{ opacity: 1, y: 0 }}
+              whileHover={{ scale: 1.08, y: -2 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <Link href="/#pricing">
+                <Button
+                  size="lg"
+                  className="link-button hero-button-primary group"
+                >
+                  <span className="hero-button-content">
+                    <ZapIcon className="hero-button-icon-primary group-hover:scale-125 group-hover:rotate-12" />
+                    Buy a Plan
+                  </span>
+                </Button>
+              </Link>
+            </MotionDiv>
           </div>
         </div>
       </div>
