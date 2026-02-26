@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
-import { Button } from "@/components/ui/button";
-import Header from "@/components/layout/Header";
+
+import HeaderWrapper from "@/components/layout/header-wrapper";
 
 const outfitFont = Outfit({
   subsets: ["latin"],
@@ -25,7 +25,7 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <body className={`${outfitFont.className} antialiased`}>
-          <Header />
+          <HeaderWrapper />
           {children}
         </body>
       </html>

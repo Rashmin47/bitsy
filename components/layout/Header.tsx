@@ -1,20 +1,13 @@
 "use client";
-import {
-  SignedIn,
-  SignedOut,
-  SignInButton,
-  SignUpButton,
-  UserButton,
-  useUser,
-} from "@clerk/nextjs";
+import { UserButton, useUser } from "@clerk/nextjs";
 import { Button } from "../ui/button";
 import Link from "next/link";
 import { Badge } from "../ui/badge";
 import { MessageCircleIcon, TrophyIcon, UserIcon } from "lucide-react";
 
-export default function Header() {
+export default function Header({ isPro }: { isPro: boolean }) {
   const { isSignedIn } = useUser();
-  const isPro = true;
+
   return (
     <header>
       <div className="layout-container">
@@ -22,6 +15,7 @@ export default function Header() {
           <Link href="/" className="font-bold text-xl space-x-2">
             Bitsy
           </Link>
+
           {isSignedIn && (
             <nav className="hidden md:flex items-center gap-6">
               <Link href="/dashboard" className="font-bold text-xl">
@@ -46,13 +40,22 @@ export default function Header() {
         </div>
         <div className="flex items-center gap-4">
           {isSignedIn ? (
-            isPro ? (
-              <Badge className="flex items-center gap-2" variant={"outline"}>
-                <TrophyIcon className="size-3 text-primary" /> Pro
-              </Badge>
-            ) : (
-              "Free"
-            )
+            <>
+              {isPro ? (
+                <Badge className="flex items-center gap-2" variant={"outline"}>
+                  <TrophyIcon className="size-3 text-primary" /> Pro
+                </Badge>
+              ) : (
+                "Free"
+              )}
+              <UserButton
+                appearance={{
+                  elements: {
+                    avatarBox: "size-9",
+                  },
+                }}
+              />
+            </>
           ) : (
             <div className="flex items-center gap-2">
               <Link href="/sign-in">
@@ -65,24 +68,7 @@ export default function Header() {
               </Link>
             </div>
           )}
-
-          <UserButton
-            appearance={{
-              elements: {
-                avatarBox: "size-9",
-              },
-            }}
-          />
         </div>
-        <SignedOut>
-          <SignInButton />
-          <SignUpButton>
-            <Button>Sign Up</Button>
-          </SignUpButton>
-        </SignedOut>
-        <SignedIn>
-          <UserButton />
-        </SignedIn>
       </div>
     </header>
   );
