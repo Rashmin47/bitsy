@@ -1,10 +1,21 @@
-import { PricingTable } from "@clerk/nextjs";
+import { BackgroundGradient } from "@/components/landing/background-gradient";
+import CtaSection from "@/components/landing/cta-section";
+import FeaturesSection from "@/components/landing/features-section";
+import HeroSection from "@/components/landing/hero-section";
+import HowItWorksSection from "@/components/landing/how-it-works-section";
+import PricingSection from "@/components/landing/pricing-section";
 
 export default function Home() {
   return (
-    <div>
-      <h1>Hello World</h1>
-      <PricingTable />
+    <div className="relative min-h-screen">
+      <BackgroundGradient />
+      <div className="relative z-10">
+        <HeroSection />
+        <FeaturesSection />
+        <HowItWorksSection />
+        <CtaSection />
+        <PricingSection />
+      </div>
     </div>
   );
 }
