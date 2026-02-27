@@ -2,6 +2,7 @@
 import { Button } from "@/components/ui/button";
 import {
   Card,
+  CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
@@ -17,13 +18,17 @@ export default function DashboardPage() {
   const { data, isLoading, error } = useQuery({
     queryKey: ["communities"],
     queryFn: async () => {
-      const res = await client.api.communities.all.$get();
+      const res = await client.api.communities.$get();
+      if (!res.ok) {
+        throw new Error("Failed to fetch communities");
+      }
       return res.json();
     },
   });
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
+
   return (
     <div className="page-wrapper">
       <div>
@@ -68,6 +73,21 @@ export default function DashboardPage() {
             </div>
             <CardDescription>Communities you&apos;re part of </CardDescription>
           </CardHeader>
+
+          <CardContent>
+            <div className="space-y-3">
+              {data?.map((community: any) => (
+                <Card className="shadow-none" key={community.id}>
+                  <Link href={`/communities/${community.id}`}>
+                    <CardHeader>
+                      <CardTitle>{community.name}</CardTitle>
+                      <CardDescription>{community.description}</CardDescription>
+                    </CardHeader>
+                  </Link>
+                </Card>
+              ))}
+            </div>
+          </CardContent>
         </Card>
       </div>
     </div>
