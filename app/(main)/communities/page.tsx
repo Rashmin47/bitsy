@@ -11,6 +11,7 @@ import {
 import { useCommunities, useCommunityGoals } from "@/hooks/use-communities";
 import { BotIcon } from "lucide-react";
 import { div } from "motion/react-client";
+import Link from "next/link";
 import { startTransition, useEffect, useState } from "react";
 
 export default function CommunitiesPage() {
@@ -38,82 +39,72 @@ export default function CommunitiesPage() {
   }, [communities?.length]);
 
   return (
-    <div className="page-wrapper">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">Communities</h1>
-          <p className="text-muted-foreground">
-            Manage your learning goals and find learning partners
-          </p>
-        </div>
-      </div>
-      <div className="grid gap-6 lg:grid-cols-3">
-        <Card className="lg:col-span-1">
-          <CardHeader>
-            <CardTitle>Communities</CardTitle>
-            <CardDescription>{communities?.length} joined</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-2">
-            {communities?.map((c) => (
-              <Button
-                key={c.community.id}
-                variant={
-                  selectedCommunity === c.community.id ? "default" : "outline"
-                }
-                className="w-full justify-start"
-                onClick={() => setSelectedCommunity(c.community.id)}
-              >
-                {c.community.name}
-              </Button>
-            ))}
-          </CardContent>
-        </Card>
-        <Card className="lg:col-span-2">
-          <CardHeader>
-            <div className="flex gap-2 mb-4">
-              <Button
-                onClick={() => setActiveTab("goals")}
-                variant={activeTab === "goals" ? "default" : "outline"}
-              >
-                My Goals
-              </Button>
-              <Button
-                onClick={() => setActiveTab("matches")}
-                variant={activeTab === "matches" ? "default" : "outline"}
-              >
-                <BotIcon className="size-4" />
-                Find Partners with AI
-              </Button>
+    <div className="grid gap-6 lg:grid-cols-3">
+      <Card className="lg:col-span-1">
+        <CardHeader>
+          <CardTitle>Communities</CardTitle>
+          <CardDescription>{communities?.length} joined</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-2">
+          {communities?.map((c) => (
+            <Button
+              key={c.community.id}
+              variant={
+                selectedCommunity === c.community.id ? "default" : "outline"
+              }
+              className="w-full justify-start"
+              onClick={() => setSelectedCommunity(c.community.id)}
+            >
+              {c.community.name}
+            </Button>
+          ))}
+        </CardContent>
+      </Card>
+      <Card className="lg:col-span-2">
+        <CardHeader>
+          <div className="flex gap-2 mb-4">
+            <Button
+              onClick={() => setActiveTab("goals")}
+              variant={activeTab === "goals" ? "default" : "outline"}
+            >
+              My Goals
+            </Button>
+            <Button
+              onClick={() => setActiveTab("matches")}
+              variant={activeTab === "matches" ? "default" : "outline"}
+            >
+              <BotIcon className="size-4" />
+              Find Partners with AI
+            </Button>
+          </div>
+          <CardTitle>
+            {activeTab === "goals"
+              ? "Learning Goals"
+              : "Potential Learning Partners"}
+          </CardTitle>
+          <CardDescription>
+            {activeTab === "goals"
+              ? `${communityGoals?.length} ${communityGoals?.length === 1 ? "goal" : "goals"} in selected community`
+              : "Members with similar learning goals"}
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          {activeTab === "goals" ? (
+            <div className="space-y-2">
+              {communityGoals?.map((c) => (
+                <Card key={c.id} className="shadow-none">
+                  <CardHeader>
+                    <CardTitle className="text-base">{c.title}</CardTitle>
+                    <CardDescription>{c.description}</CardDescription>
+                  </CardHeader>
+                </Card>
+              ))}
             </div>
-            <CardTitle>
-              {activeTab === "goals"
-                ? "Learning Goals"
-                : "Potential Learning Partners"}
-            </CardTitle>
-            <CardDescription>
-              {activeTab === "goals"
-                ? `${communityGoals?.length} ${communityGoals?.length === 1 ? "goal" : "goals"} in selected community`
-                : "Members with similar learning goals"}
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            {activeTab === "goals" ? (
-              <div className="space-y-2">
-                {communityGoals?.map((c) => (
-                  <Card key={c.communityId} className="shadow-none">
-                    <CardHeader>
-                      <CardTitle className="text-base">{c.title}</CardTitle>
-                      <CardDescription>{c.description}</CardDescription>
-                    </CardHeader>
-                  </Card>
-                ))}
-              </div>
-            ) : (
-              <AIMatching totalGoals={communityGoals?.length} />
-            )}
-          </CardContent>
-        </Card>
-      </div>
+          ) : (
+            <AIMatching totalGoals={communityGoals?.length || 0} />
+          )}
+        </CardContent>
+      </Card>
     </div>
   );
 }
