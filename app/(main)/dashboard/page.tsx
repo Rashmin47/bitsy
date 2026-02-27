@@ -1,16 +1,24 @@
+"use client";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { client } from "@/lib/api-client";
 import { useUser } from "@clerk/nextjs";
 import { useQuery } from "@tanstack/react-query";
+import { MessageCircleIcon, UsersIcon } from "lucide-react";
+import Link from "next/link";
 
 export default function DashboardPage() {
-    const user = useUser();
+  const user = useUser();
   const { data, isLoading, error } = useQuery({
     queryKey: ["communities"],
     queryFn: async () => {
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          resolve([{ id: 1, name: "Community 1" }]);
-        }, 1000);
-      });
+      const res = await client.api.communities.all.$get();
+      return res.json();
     },
   });
 
@@ -20,12 +28,48 @@ export default function DashboardPage() {
     <div className="page-wrapper">
       <div>
         <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
-        <p className="text-muted-foreground">Welcome back, {user?.user?.firstName || "User"}!</p>
+        <p className="text-muted-foreground">
+          Welcome back, {user?.user?.firstName || "User"}!
+        </p>
       </div>
-      {data && 
-      data.map((
-        community:{id: number; name: string}
-      ))}
+      <div className="grid gap-6 lg:grid-cols-2">
+        <Card>
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <CardTitle className="flex items-center">
+                <MessageCircleIcon className="size-4 mr-2 text-primary" />
+                Recent Chats
+              </CardTitle>
+              <Link href="/chat">
+                <Button variant="outline" size="sm">
+                  <UsersIcon className="size-4 mr-2 text-primary" />
+                  View All
+                </Button>
+              </Link>
+            </div>
+            <CardDescription>Communities you&apos;re part of </CardDescription>
+          </CardHeader>
+        </Card>
+      </div>
+      <div className="grid gap-6 lg:grid-cols-2">
+        <Card>
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <CardTitle className="flex items-center">
+                <UsersIcon className="size-4 mr-2 text-primary" />
+                Communities
+              </CardTitle>
+              <Link href="/communities">
+                <Button variant="outline" size="sm">
+                  <UsersIcon className="size-4 mr-2 text-primary" />
+                  Manage
+                </Button>
+              </Link>
+            </div>
+            <CardDescription>Communities you&apos;re part of </CardDescription>
+          </CardHeader>
+        </Card>
+      </div>
     </div>
   );
 }
