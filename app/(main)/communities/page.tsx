@@ -1,4 +1,5 @@
 "use client";
+import AddLearningGoal from "@/components/communities/add-learning-goal";
 import AIMatching from "@/components/communities/ai-matching";
 import { Button } from "@/components/ui/button";
 import {
@@ -9,7 +10,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { useCommunities, useCommunityGoals } from "@/hooks/use-communities";
-import { BotIcon } from "lucide-react";
+import { BotIcon, PlusIcon } from "lucide-react";
 import { div } from "motion/react-client";
 import Link from "next/link";
 import { startTransition, useEffect, useState } from "react";
@@ -99,6 +100,7 @@ export default function CommunitiesPage() {
                   </CardHeader>
                 </Card>
               ))}
+              <AddLearningGoal selectedCommunityId={selectedCommunity!} />
             </div>
           ) : (
             <AIMatching totalGoals={communityGoals?.length || 0} />

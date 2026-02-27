@@ -7,6 +7,7 @@ import HeaderWrapper from "@/components/layout/header-wrapper";
 import Footer from "@/components/layout/Footer";
 import { QueryClientProvider } from "@tanstack/react-query";
 import QueryProvider from "@/components/providers/query-provider";
+import { Toaster } from "sonner";
 
 const outfitFont = Outfit({
   subsets: ["latin"],
@@ -33,6 +34,7 @@ export default function RootLayout({
             {children}
             <Footer />
           </QueryProvider>
+          <Toaster position="top-right" />
         </body>
       </html>
     </ClerkProvider>

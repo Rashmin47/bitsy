@@ -1,6 +1,6 @@
 import { db } from "@/db";
 import { learningGoals } from "@/db/schema";
-import { getOrCreateUserByClerkId } from "@/lib/user-utils";
+
 import { and, eq } from "drizzle-orm";
 import { Context, Hono } from "hono";
 import { HTTPException } from "hono/http-exception";
